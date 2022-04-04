@@ -1,0 +1,15 @@
+{
+    "version": "0.0.1",
+    "configurations": [
+        {
+            "name": "DoggieWalker",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            // "args": [
+            //     "--flavor",
+            //     "dev",
+            // ]
+        }
+    ]
+}
