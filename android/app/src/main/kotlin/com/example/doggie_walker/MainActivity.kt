@@ -1,4 +1,4 @@
-package com.example.doggie_walker
+package com.doggie_walker.app
 
 import io.flutter.embedding.android.FlutterActivity
 
