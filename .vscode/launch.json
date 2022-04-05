@@ -6,10 +6,10 @@
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart",
-            // "args": [
-            //     "--flavor",
-            //     "dev",
-            // ]
+            "args": [
+                "--flavor",
+                "dev",
+            ]
         }
     ]
 }
