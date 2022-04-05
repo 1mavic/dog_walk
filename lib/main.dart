@@ -1,3 +1,4 @@
+import 'package:doggie_walker/flavor_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -25,17 +26,17 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MapSample(),
+      home: FlavorBanner(child: MapScreen()),
     );
   }
 }
 
-class MapSample extends StatefulWidget {
+class MapScreen extends StatefulWidget {
   @override
-  State<MapSample> createState() => MapSampleState();
+  State<MapScreen> createState() => MapScreenState();
 }
 
-class MapSampleState extends State<MapSample> {
+class MapScreenState extends State<MapScreen> {
   final _controller = GoogleMapController.init;
 
   static final CameraPosition _kGooglePlex = CameraPosition(
