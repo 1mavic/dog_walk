@@ -1,0 +1,10 @@
+{
+    "hello": "hello",
+    "pageHomeWelcomeFullName": "Welcome {lastName} {firstName}",
+    "@pageHomeWelcomeFullName": {
+        "placeholders": {
+            "firstName": {},
+            "lastName": {}
+        }
+    }
+}

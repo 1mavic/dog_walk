@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:doggie_walker/config/flavor/flavor_banner.dart';
 import 'package:doggie_walker/config/flavor/flavor_enum.dart';
 import 'package:doggie_walker/environment.dart';
+import 'package:doggie_walker/generated/l10n.dart';
 import 'package:doggie_walker/ui/main_screen_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() async {
@@ -19,6 +21,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -169,7 +178,9 @@ class _SmallFabWidget extends StatelessWidget {
       child: SizedBox.square(
         dimension: 45,
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            S.load(Locale('ru_RU'));
+          },
           child: Icon(icon),
         ),
       ),

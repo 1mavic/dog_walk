@@ -1,3 +1,4 @@
+import 'package:doggie_walker/generated/l10n.dart';
 import 'package:doggie_walker/main.dart';
 import 'package:doggie_walker/ui/user_avatar_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,8 +60,13 @@ class DrawerWidget extends StatelessWidget {
               top: 250,
               child: Column(
                 children: [
-                  Text('text 1'),
-                  Text('text 2'),
+                  Text(S.of(context).hello),
+                  Text(
+                    S.of(context).pageHomeWelcomeFullName(
+                          'Aleksey',
+                          'Matsegora',
+                        ),
+                  ),
                   Text('text 3'),
                   Text('text 4'),
                   Text('text 5'),
