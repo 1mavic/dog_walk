@@ -1,0 +1,15 @@
+{
+  "@@last_modified": "2022-11-17T01:03:21.887566",
+  "helloWorld": "Hello world!!",
+  "@helloWorld": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "hello": "Hello",
+  "@hello": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  }
+}

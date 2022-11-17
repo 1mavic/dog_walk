@@ -1,7 +1,8 @@
 import 'dart:developer';
 
+import 'package:doggie_walker/config/flavor/flavor_banner.dart';
+import 'package:doggie_walker/config/flavor/flavor_enum.dart';
 import 'package:doggie_walker/environment.dart';
-import 'package:doggie_walker/flavor_config.dart';
 import 'package:doggie_walker/ui/main_screen_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FlavorBanner(child: MapScreen()),
+      home: FlavorBanner(
+        child: MapScreen(),
+        flavor: Flavor.dev,
+      ),
     );
   }
 }
