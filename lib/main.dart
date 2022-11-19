@@ -1,12 +1,16 @@
 import 'dart:developer';
 
+import 'package:doggie_walker/bloc/user_bloc/user_bloc.dart';
 import 'package:doggie_walker/config/flavor/flavor_banner.dart';
 import 'package:doggie_walker/config/flavor/flavor_enum.dart';
+import 'package:doggie_walker/entity/repositories/login_repository/login_repository.dart';
+import 'package:doggie_walker/entity/repositories/user_repository/user_repository.dart';
 import 'package:doggie_walker/environment.dart';
 import 'package:doggie_walker/generated/l10n.dart';
 import 'package:doggie_walker/ui/main_screen_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,21 +26,27 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return BlocProvider(
+      create: (context) => UserBloc(
+        FirebaseLoginRepository(),
+        UserRepositoryImpl(),
       ),
-      home: const FlavorBanner(
-        flavor: Flavor.dev,
-        child: MapScreen(),
+      child: MaterialApp(
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const FlavorBanner(
+          flavor: Flavor.dev,
+          child: MapScreen(),
+        ),
       ),
     );
   }

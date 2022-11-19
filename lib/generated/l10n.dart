@@ -60,13 +60,13 @@ class S {
     );
   }
 
-  /// `Welcome {lastName} {firstName}`
-  String pageHomeWelcomeFullName(Object firstName, Object lastName) {
+  /// `Welcome {name}`
+  String pageHomeWelcomeFullName(Object name) {
     return Intl.message(
-      'Welcome $lastName $firstName',
+      'Welcome $name',
       name: 'pageHomeWelcomeFullName',
       desc: '',
-      args: [firstName, lastName],
+      args: [name],
     );
   }
 }

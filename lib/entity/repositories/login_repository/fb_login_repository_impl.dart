@@ -4,25 +4,25 @@ import 'package:doggie_walker/entity/repositories/login_repository/login_reposit
 
 /// login user service with farebase implementation
 class FirebaseLoginRepository implements LoginRepository {
-  final StreamController<UserLoggingStatus> _userStream =
-      StreamController<UserLoggingStatus>.broadcast();
+  final StreamController<UserLoggingStatus> _statusStream =
+      StreamController<UserLoggingStatus>();
 
   @override
-  void dispose() => _userStream.close();
+  void dispose() => _statusStream.close();
 
   @override
   Future<void> logOutUser() async {
-    _userStream.sink.add(
+    _statusStream.sink.add(
       UserLoggingStatus.notLogged,
     );
   }
 
   @override
-  Stream<UserLoggingStatus> get loginStatus => _userStream.stream;
+  Stream<UserLoggingStatus> get loginStatus => _statusStream.stream;
 
   @override
   Future<void> loginUser() async {
-    _userStream.sink.add(
+    _statusStream.sink.add(
       UserLoggingStatus.logged,
     );
   }

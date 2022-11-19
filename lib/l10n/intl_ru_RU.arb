@@ -1,10 +1,9 @@
 {
     "hello": "привет",
-    "pageHomeWelcomeFullName": "Добро пожаловать {lastName} {firstName}",
+    "pageHomeWelcomeFullName": "Добро пожаловать {name}",
     "@pageHomeWelcomeFullName": {
         "placeholders": {
-            "firstName": {},
-            "lastName": {}
+            "name": {}
         }
     }
 }
