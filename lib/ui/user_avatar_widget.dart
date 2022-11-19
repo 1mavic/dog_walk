@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// user avatar widget
 class UserAvatarWidget extends StatelessWidget {
-  const UserAvatarWidget({Key? key}) : super(key: key);
+  /// user avatar widget
+  const UserAvatarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

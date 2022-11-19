@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:doggie_walker/config/theme/app_colors.dart';
 import 'package:doggie_walker/config/flavor/flavor_enum.dart';
+import 'package:doggie_walker/config/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 /// Flavor Banner Widget. Helps indicate running flavor of application.

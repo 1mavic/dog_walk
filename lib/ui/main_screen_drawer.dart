@@ -1,11 +1,12 @@
 import 'package:doggie_walker/generated/l10n.dart';
-import 'package:doggie_walker/main.dart';
 import 'package:doggie_walker/ui/user_avatar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// drawer on main screen widget
 class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({Key? key}) : super(key: key);
+  /// drawer on main screen widget
+  const DrawerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +39,9 @@ class DrawerWidget extends StatelessWidget {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      shape: BoxShape.circle),
+                    color: Theme.of(context).primaryColor,
+                    shape: BoxShape.circle,
+                  ),
                   padding: const EdgeInsets.all(6),
                   child: const Icon(
                     CupertinoIcons.clear,
@@ -57,21 +59,22 @@ class DrawerWidget extends StatelessWidget {
             child: UserAvatarWidget(),
           ),
           Positioned(
-              top: 250,
-              child: Column(
-                children: [
-                  Text(S.of(context).hello),
-                  Text(
-                    S.of(context).pageHomeWelcomeFullName(
-                          'Aleksey',
-                          'Matsegora',
-                        ),
-                  ),
-                  Text('text 3'),
-                  Text('text 4'),
-                  Text('text 5'),
-                ],
-              ))
+            top: 250,
+            child: Column(
+              children: [
+                Text(S.of(context).hello),
+                Text(
+                  S.of(context).pageHomeWelcomeFullName(
+                        'Aleksey',
+                        'Matsegora',
+                      ),
+                ),
+                const Text('text 3'),
+                const Text('text 4'),
+                const Text('text 5'),
+              ],
+            ),
+          )
         ],
       ),
     );

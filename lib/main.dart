@@ -16,12 +16,14 @@ void main() async {
   runApp(const MyApp());
 }
 
+/// my app widget
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  /// my app widget
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: [
+      localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -32,65 +34,72 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FlavorBanner(
-        child: MapScreen(),
+      home: const FlavorBanner(
         flavor: Flavor.dev,
+        child: MapScreen(),
       ),
     );
   }
 }
 
+/// scrren with map and controll fabs
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  /// scrren with map and controll fabs
+  const MapScreen({super.key});
 
   @override
-  State<MapScreen> createState() => MapScreenState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
-class MapScreenState extends State<MapScreen> {
+class _MapScreenState extends State<MapScreen> {
   final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+    zoom: 4.4746,
   );
 
-  final CameraPosition _kLake = const CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  // final CameraPosition _kLake = const CameraPosition(
+  //   bearing: 192.8334901395799,
+  //   target: LatLng(37.43296265331129, -122.08832357078792),
+  //   tilt: 59.440717697143555,
+  //   zoom: 19.151926040649414,
+  // );
   final circle = Circle(
-      circleId: CircleId('first'),
-      center: LatLng(37.43296265331129, -122.08832357078792),
-      radius: 50,
-      fillColor: Colors.blueAccent,
-      visible: true,
-      strokeColor: Colors.blue,
-      consumeTapEvents: true,
-      onTap: () => log('tap'));
+    circleId: const CircleId('first'),
+    center: const LatLng(37.43296265331129, -122.08832357078792),
+    radius: 50,
+    fillColor: Colors.blueAccent,
+    // visible: true,
+    strokeColor: Colors.blue,
+    consumeTapEvents: true,
+    onTap: () => log(
+      'tap',
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        endDrawer: DrawerWidget(),
-        body: Stack(
-          children: [
-            GoogleMap(
-              mapType: MapType.normal, //satellite normal
-              initialCameraPosition: _kGooglePlex,
-              //myLocationButtonEnabled: false,
-              circles: {circle},
-              myLocationButtonEnabled: false,
-              myLocationEnabled: true,
-              onMapCreated: (GoogleMapController controller) {},
-            ),
-            _DrawerButtonWidget()
-          ],
-        ),
-        floatingActionButton: FloatingButtonsWidget());
+      endDrawer: const DrawerWidget(),
+      body: Stack(
+        children: [
+          GoogleMap(
+            // mapType: MapType.normal, //satellite normal
+            initialCameraPosition: _kGooglePlex,
+            //myLocationButtonEnabled: false,
+            circles: {circle},
+            myLocationButtonEnabled: false,
+            myLocationEnabled: true,
+            onMapCreated: (GoogleMapController controller) {},
+          ),
+          const _DrawerButtonWidget()
+        ],
+      ),
+      floatingActionButton: const FloatingButtonsWidget(),
+    );
   }
 }
 
 class _DrawerButtonWidget extends StatelessWidget {
-  const _DrawerButtonWidget({Key? key}) : super(key: key);
+  const _DrawerButtonWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +113,9 @@ class _DrawerButtonWidget extends StatelessWidget {
           },
           child: Container(
             decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor, shape: BoxShape.circle),
+              color: Theme.of(context).primaryColor,
+              shape: BoxShape.circle,
+            ),
             padding: const EdgeInsets.all(6),
             child: const Icon(
               CupertinoIcons.line_horizontal_3,
@@ -118,12 +129,14 @@ class _DrawerButtonWidget extends StatelessWidget {
   }
 }
 
+/// fab on main button widget
 class FloatingButtonsWidget extends HookWidget {
-  const FloatingButtonsWidget({Key? key}) : super(key: key);
+  /// fab on main button widget
+  const FloatingButtonsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final _isExpanded = useState(false);
+    final isExpanded = useState(false);
     return SafeArea(
       child: SizedBox.expand(
         child: Stack(
@@ -131,25 +144,25 @@ class FloatingButtonsWidget extends HookWidget {
           //mainAxisAlignment: MainAxisAlignment.end,
           children: [
             _SmallFabWidget(
-              bottom: _isExpanded.value ? 65 : 0,
+              bottom: isExpanded.value ? 65 : 0,
               right: 7,
               icon: CupertinoIcons.location_circle,
             ),
             _SmallFabWidget(
-              bottom: _isExpanded.value ? 120 : 0,
+              bottom: isExpanded.value ? 120 : 0,
               right: 7,
               icon: CupertinoIcons.location_circle,
             ),
             _SmallFabWidget(
               bottom: 7,
-              right: _isExpanded.value ? 65 : 0,
+              right: isExpanded.value ? 65 : 0,
               icon: CupertinoIcons.location_circle,
             ),
             FloatingActionButton(
               onPressed: () {
-                _isExpanded.value = !_isExpanded.value;
+                isExpanded.value = !isExpanded.value;
               },
-              child: Icon(CupertinoIcons.settings),
+              child: const Icon(CupertinoIcons.settings),
             ),
           ],
         ),
@@ -160,11 +173,10 @@ class FloatingButtonsWidget extends HookWidget {
 
 class _SmallFabWidget extends StatelessWidget {
   const _SmallFabWidget({
-    Key? key,
     required this.bottom,
     required this.right,
     required this.icon,
-  }) : super(key: key);
+  });
   final double bottom;
   final double right;
   final IconData icon;
@@ -179,7 +191,11 @@ class _SmallFabWidget extends StatelessWidget {
         dimension: 45,
         child: FloatingActionButton(
           onPressed: () {
-            S.load(Locale('ru_RU'));
+            S.load(
+              const Locale(
+                'ru_RU',
+              ),
+            );
           },
           child: Icon(icon),
         ),
