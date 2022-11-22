@@ -12,7 +12,7 @@ class UserChangedEvent extends UserEvent {
   const UserChangedEvent(this.newUser);
 
   /// new user data
-  final User newUser;
+  final AppUser newUser;
   @override
   List<Object?> get props => [
         newUser,
@@ -33,4 +33,22 @@ class UserStateEvent extends UserEvent {
   List<Object> get props => [
         newStatus,
       ];
+}
+
+class CreateUserEvent extends UserEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class LoginUserEvent extends UserEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class LogOutUserEvent extends UserEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
 }

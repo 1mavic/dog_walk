@@ -6,7 +6,7 @@ import 'package:doggie_walker/entity/repositories/user_repository/user_repositor
 /// user repository implementation
 class UserRepositoryImpl implements UserRepository {
   /// user repository implementation
-  final StreamController<User> _userStream = StreamController<User>();
+  final StreamController<AppUser> _userStream = StreamController<AppUser>();
   @override
   Future<void> changeUser(LoggedUser user) {
     // TODO: implement changeUser
@@ -21,7 +21,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<User> get userStream => _userStream.stream;
+  Stream<AppUser> get userStream => _userStream.stream;
 
   @override
   void dispose() {

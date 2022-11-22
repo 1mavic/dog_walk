@@ -16,6 +16,12 @@ abstract class LoginRepository {
   /// log out user method
   Future<void> logOutUser();
 
+  /// check user login state method
+  Future<void> checkState();
+
+  /// create user
+  Future<void> createUser();
+
   /// dispose repository
   void dispose();
 }

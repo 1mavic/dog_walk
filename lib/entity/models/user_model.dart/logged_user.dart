@@ -2,7 +2,7 @@ import 'package:doggie_walker/entity/models/pet/pet_model.dart';
 import 'package:doggie_walker/entity/models/user_model.dart/user_model.dart';
 
 /// Logged user
-class LoggedUser extends User {
+class LoggedUser extends AppUser {
   /// Logged user
   const LoggedUser({
     required int id,

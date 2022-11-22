@@ -1,7 +1,7 @@
 import 'package:doggie_walker/entity/models/user_model.dart/user_model.dart';
 
 /// Not logged user
-class NotLoggedUser extends User {
+class NotLoggedUser extends AppUser {
   /// Not logged user
   const NotLoggedUser();
   @override

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:doggie_walker/entity/models/login/login_state.dart';
 import 'package:doggie_walker/entity/models/user_model.dart/user.dart';
@@ -25,10 +26,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
     on<UserStateEvent>(_onStateChange);
     on<UserChangedEvent>(_onUserChanged);
+    on<CreateUserEvent>(_createUser);
+    on<LoginUserEvent>(_loginUser);
+    on<LogOutUserEvent>(_logOutUser);
   }
   final LoginRepository _loginRepository;
   final UserRepository _userRepository;
-  late StreamSubscription<User> _userSub;
+  late StreamSubscription<AppUser> _userSub;
   late StreamSubscription<UserLoggingStatus> _loginStateSub;
 
   Future<void> _onStateChange(
@@ -71,6 +75,35 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> _getUserData() async {
     unawaited(
       _userRepository.getUser(),
+    );
+  }
+
+  Future<void> _createUser(
+    CreateUserEvent event,
+    Emitter<UserState> emit,
+  ) async {
+    unawaited(
+      _loginRepository.createUser(),
+    );
+  }
+
+  Future<void> _loginUser(
+    LoginUserEvent event,
+    Emitter<UserState> emit,
+  ) async {
+    log('logging');
+    unawaited(
+      _loginRepository.loginUser(),
+    );
+  }
+
+  Future<void> _logOutUser(
+    LogOutUserEvent event,
+    Emitter<UserState> emit,
+  ) async {
+    log('logging out');
+    unawaited(
+      _loginRepository.logOutUser(),
     );
   }
 
