@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doggie_walker/entity/models/login/login_state.dart';
 import 'package:doggie_walker/entity/repositories/login_repository/login_repository_contract.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,7 +50,9 @@ class FirebaseLoginRepository implements LoginRepository {
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   @override
@@ -64,6 +67,10 @@ class FirebaseLoginRepository implements LoginRepository {
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: 'amacegora1@gmail.com',
         password: 'password',
+      );
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      await firestore.collection('users').add(
+        {'userId': credential.user?.uid, 'name': 'Aleksei'},
       );
       log(credential.toString());
     } on FirebaseAuthException catch (e) {
