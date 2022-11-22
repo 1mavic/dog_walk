@@ -174,7 +174,7 @@ class FloatingButtonsWidget extends HookWidget {
               bottom: 7,
               right: isExpanded.value ? 65 : 0,
               icon: CupertinoIcons.location_circle,
-              onTap: () {},
+              onTap: () => context.read<UserBloc>().add(CreateUserEvent()),
             ),
             FloatingActionButton(
               onPressed: () {

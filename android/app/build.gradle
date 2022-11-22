@@ -60,7 +60,7 @@ android {
                 applicationIdSuffix ".dev"
                 resValue "string", "app_name", "Dev dog walk"
                 versionNameSuffix "-dev"
-                applicationId "com.doggie_walker.app.dev"
+                applicationId "com.doggie_walker.app"
             }
             prod {
                 dimension "flavors"

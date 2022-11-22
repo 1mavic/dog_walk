@@ -41,7 +41,7 @@ class FirebaseLoginRepository implements LoginRepository {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: 'amacegora@gmail.com',
-        password: 'password1',
+        password: 'password',
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -62,9 +62,10 @@ class FirebaseLoginRepository implements LoginRepository {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: 'amacegora@gmail.com',
+        email: 'amacegora1@gmail.com',
         password: 'password',
       );
+      log(credential.toString());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
