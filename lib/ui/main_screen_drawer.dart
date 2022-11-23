@@ -23,8 +23,7 @@ class DrawerWidget extends StatelessWidget {
                 child: DrawerHeader(
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
-                  decoration:
-                      BoxDecoration(color: Theme.of(context).backgroundColor),
+                  decoration: BoxDecoration(color: Theme.of(context).cardColor),
                   child: SizedBox(
                     width: double.infinity,
                     child: state is LoggedState
@@ -71,13 +70,16 @@ class DrawerWidget extends StatelessWidget {
               Positioned(
                 top: 250,
                 child: Column(
-                  children: const [
-                    SizedBox(
+                  children: [
+                    const SizedBox(
                       height: 50,
                     ),
-                    Text('text 3'),
-                    Text('text 4'),
-                    Text('text 5'),
+                    if (state is LoggedState && state.user.pets.isNotEmpty)
+                      Text(
+                        state.user.pets.first.age.toString(),
+                      ),
+                    const Text('text 4'),
+                    const Text('text 5'),
                   ],
                 ),
               )

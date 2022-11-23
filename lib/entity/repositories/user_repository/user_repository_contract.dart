@@ -6,7 +6,7 @@ abstract class UserRepository {
   const UserRepository();
 
   /// user stream return User class
-  Stream<User> get userStream;
+  Stream<AppUser> get userStream;
 
   /// function to get current user data
   Future<void> getUser();

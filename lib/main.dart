@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:doggie_walker/bloc/user_bloc/user_bloc.dart';
 import 'package:doggie_walker/config/flavor/flavor_banner.dart';
 import 'package:doggie_walker/config/flavor/flavor_enum.dart';
@@ -8,6 +7,7 @@ import 'package:doggie_walker/entity/repositories/user_repository/user_repositor
 import 'package:doggie_walker/environment.dart';
 import 'package:doggie_walker/generated/l10n.dart';
 import 'package:doggie_walker/ui/main_screen_drawer.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +17,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() async {
   env = await loadEnvironment();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -27,6 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
+      lazy: false,
       create: (context) => UserBloc(
         FirebaseLoginRepository(),
         UserRepositoryImpl(),
@@ -156,17 +159,31 @@ class FloatingButtonsWidget extends HookWidget {
             _SmallFabWidget(
               bottom: isExpanded.value ? 65 : 0,
               right: 7,
-              icon: CupertinoIcons.location_circle,
+              icon: CupertinoIcons.person,
+              onTap: () => context.read<UserBloc>().add(
+                    const LoginUserEvent(
+                      email: 'amacegora1@gmail.com',
+                      password: 'password',
+                    ),
+                  ),
             ),
             _SmallFabWidget(
               bottom: isExpanded.value ? 120 : 0,
               right: 7,
-              icon: CupertinoIcons.location_circle,
+              icon: CupertinoIcons.arrow_turn_left_down,
+              onTap: () =>
+                  context.read<UserBloc>().add(const LogOutUserEvent()),
             ),
             _SmallFabWidget(
               bottom: 7,
               right: isExpanded.value ? 65 : 0,
               icon: CupertinoIcons.location_circle,
+              onTap: () => context.read<UserBloc>().add(
+                    const CreateUserEvent(
+                      email: 'test@gmail.com',
+                      password: 'password',
+                    ),
+                  ),
             ),
             FloatingActionButton(
               onPressed: () {
@@ -186,10 +203,12 @@ class _SmallFabWidget extends StatelessWidget {
     required this.bottom,
     required this.right,
     required this.icon,
+    required this.onTap,
   });
   final double bottom;
   final double right;
   final IconData icon;
+  final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
@@ -200,13 +219,15 @@ class _SmallFabWidget extends StatelessWidget {
       child: SizedBox.square(
         dimension: 45,
         child: FloatingActionButton(
-          onPressed: () {
-            S.load(
-              const Locale(
-                'ru_RU',
-              ),
-            );
-          },
+          onPressed: onTap,
+          //  {
+          // S.load(
+          //   const Locale(
+          //     'ru_RU',
+          //   ),
+          // );
+          //   context.read<UserBloc>().add(CreateUserEvent());
+          // },
           child: Icon(icon),
         ),
       ),

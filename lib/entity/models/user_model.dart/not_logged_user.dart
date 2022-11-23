@@ -1,14 +1,12 @@
 import 'package:doggie_walker/entity/models/user_model.dart/user_model.dart';
 
 /// Not logged user
-class NotLoggedUser extends User {
+class NotLoggedUser extends AppUser {
   /// Not logged user
   const NotLoggedUser();
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 
   @override
-  // TODO: implement stringify
-  bool? get stringify => throw UnimplementedError();
+  bool? get stringify => null;
 }
