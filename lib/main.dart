@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:doggie_walker/bloc/user_bloc/user_bloc.dart';
 import 'package:doggie_walker/config/flavor/flavor_banner.dart';
 import 'package:doggie_walker/config/flavor/flavor_enum.dart';
@@ -8,7 +7,6 @@ import 'package:doggie_walker/entity/repositories/user_repository/user_repositor
 import 'package:doggie_walker/environment.dart';
 import 'package:doggie_walker/generated/l10n.dart';
 import 'package:doggie_walker/ui/main_screen_drawer.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -162,19 +160,30 @@ class FloatingButtonsWidget extends HookWidget {
               bottom: isExpanded.value ? 65 : 0,
               right: 7,
               icon: CupertinoIcons.person,
-              onTap: () => context.read<UserBloc>().add(LoginUserEvent()),
+              onTap: () => context.read<UserBloc>().add(
+                    const LoginUserEvent(
+                      email: 'amacegora1@gmail.com',
+                      password: 'password',
+                    ),
+                  ),
             ),
             _SmallFabWidget(
               bottom: isExpanded.value ? 120 : 0,
               right: 7,
               icon: CupertinoIcons.arrow_turn_left_down,
-              onTap: () => context.read<UserBloc>().add(LogOutUserEvent()),
+              onTap: () =>
+                  context.read<UserBloc>().add(const LogOutUserEvent()),
             ),
             _SmallFabWidget(
               bottom: 7,
               right: isExpanded.value ? 65 : 0,
               icon: CupertinoIcons.location_circle,
-              onTap: () => context.read<UserBloc>().add(CreateUserEvent()),
+              onTap: () => context.read<UserBloc>().add(
+                    const CreateUserEvent(
+                      email: 'test@gmail.com',
+                      password: 'password',
+                    ),
+                  ),
             ),
             FloatingActionButton(
               onPressed: () {

@@ -5,10 +5,8 @@ class NotLoggedUser extends AppUser {
   /// Not logged user
   const NotLoggedUser();
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 
   @override
-  // TODO: implement stringify
-  bool? get stringify => throw UnimplementedError();
+  bool? get stringify => null;
 }

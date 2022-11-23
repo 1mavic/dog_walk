@@ -38,17 +38,17 @@ class FirebaseLoginRepository implements LoginRepository {
   Stream<UserLoggingStatus> get loginStatus => _statusStream.stream;
 
   @override
-  Future<void> loginUser() async {
+  Future<void> loginUser(String email, String password) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: 'amacegora@gmail.com',
-        password: 'password',
+        email: email,
+        password: password,
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        log('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        log('The account already exists for that email.');
       }
     } catch (e) {
       log(e.toString());
@@ -56,31 +56,33 @@ class FirebaseLoginRepository implements LoginRepository {
   }
 
   @override
-  Future<void> checkState() async {
-    final user = await FirebaseAuth.instance.currentUser;
-  }
+  Future<void> checkState() async {}
 
   @override
-  Future<void> createUser() async {
+  Future<void> createUser(String email, String password) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: 'amacegora1@gmail.com',
-        password: 'password',
+        email: email,
+        password: password,
       );
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final firestore = FirebaseFirestore.instance;
       await firestore.collection('users').add(
-        {'userId': credential.user?.uid, 'name': 'Aleksei'},
+        {
+          'userId': credential.user?.uid,
+          'name': 'Aleksei',
+          'pets': <String>[],
+        },
       );
       log(credential.toString());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        log('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        log('The account already exists for that email.');
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
     log('created');
   }

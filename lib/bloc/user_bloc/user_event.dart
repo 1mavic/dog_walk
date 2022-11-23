@@ -35,20 +35,52 @@ class UserStateEvent extends UserEvent {
       ];
 }
 
+/// create new user event
 class CreateUserEvent extends UserEvent {
+  /// create new user event
+  const CreateUserEvent({
+    required this.email,
+    required this.password,
+  });
+
+  /// new user email
+  final String email;
+
+  /// new user password
+  final String password;
+
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [
+        email,
+        password,
+      ];
 }
 
+/// login user event
 class LoginUserEvent extends UserEvent {
+  /// login user event
+  const LoginUserEvent({
+    required this.email,
+    required this.password,
+  });
+
+  ///  user email
+  final String email;
+
+  ///  user password
+  final String password;
+
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [
+        email,
+        password,
+      ];
 }
 
+/// user logout event
 class LogOutUserEvent extends UserEvent {
+  /// user logout event
+  const LogOutUserEvent();
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }

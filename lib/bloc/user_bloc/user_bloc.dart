@@ -83,7 +83,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emit,
   ) async {
     unawaited(
-      _loginRepository.createUser(),
+      _loginRepository.createUser(
+        event.email,
+        event.password,
+      ),
     );
   }
 
@@ -93,7 +96,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ) async {
     log('logging');
     unawaited(
-      _loginRepository.loginUser(),
+      _loginRepository.loginUser(
+        event.email,
+        event.password,
+      ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doggie_walker/entity/models/user_model.dart/logged_user.dart';
 import 'package:doggie_walker/entity/models/user_model.dart/user_model.dart';
@@ -22,9 +23,23 @@ class UserRepositoryImpl implements UserRepository {
     if (user == null) {
       return;
     }
-    final users = firestore.collection('users').doc(user.uid);
-    await Future<dynamic>.delayed(const Duration(seconds: 1));
-    _userStream.sink.add(_mockUser);
+    final users = await firestore
+        .collection('users')
+        .where('userId', isEqualTo: user.uid)
+        .get();
+    if (users.docs.isEmpty) {
+      log('no user in table');
+      return;
+    }
+    final userPets = await firestore
+        .collection('pets')
+        .where('ownerId', isEqualTo: user.uid)
+        .get();
+    final loggedUser = LoggedUser.fromFs(
+      users.docs.first.data(),
+      userPets.docs.map((userPet) => userPet.data()).toList(),
+    );
+    _userStream.sink.add(loggedUser);
     return;
   }
 
@@ -36,9 +51,3 @@ class UserRepositoryImpl implements UserRepository {
     _userStream.close();
   }
 }
-
-const _mockUser = LoggedUser(
-  id: 123,
-  name: 'Test User',
-  pets: [],
-);

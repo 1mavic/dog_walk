@@ -5,15 +5,27 @@ import 'package:doggie_walker/entity/models/user_model.dart/user_model.dart';
 class LoggedUser extends AppUser {
   /// Logged user
   const LoggedUser({
-    required int id,
+    required String id,
     required String name,
     List<Pet>? pets,
   })  : _userId = id,
         _userName = name,
         _userPets = pets ?? const [];
 
+  /// factory constructor from firestore
+  factory LoggedUser.fromFs(
+    Map<String, dynamic> map,
+    List<Map<String, dynamic>> userPets,
+  ) {
+    return LoggedUser(
+      id: map['userId'] as String? ?? '',
+      name: map['name'] as String? ?? '',
+      pets: userPets.map(Pet.fromFs).toList(),
+    );
+  }
+
   /// user Id
-  final int _userId;
+  final String _userId;
 
   /// user name
   final String _userName;
@@ -22,7 +34,7 @@ class LoggedUser extends AppUser {
   final List<Pet> _userPets;
 
   /// get user Id
-  int get id => _userId;
+  String get id => _userId;
 
   /// get user name
   String get name => _userName;
@@ -30,11 +42,22 @@ class LoggedUser extends AppUser {
   /// get list of users pets
   List<Pet> get pets => _userPets;
 
-  @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  /// make firestore map from user
+  Map<String, dynamic> toFsMap() {
+    return {
+      'userId': _userId,
+      'userName': _userName,
+      'userPets': _userPets.map((pet) => pet.id).toList(),
+    };
+  }
 
   @override
-  // TODO: implement stringify
+  List<Object?> get props => [
+        _userId,
+        _userName,
+        _userPets,
+      ];
+
+  @override
   bool? get stringify => throw UnimplementedError();
 }
