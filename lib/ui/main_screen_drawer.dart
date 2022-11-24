@@ -5,6 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../entity/repositories/login_repository/login_repository.dart';
+import '../login_screen/bloc/login_screen_bloc_bloc.dart';
+import '../login_screen/login_screen.dart';
+
 /// drawer on main screen widget
 class DrawerWidget extends StatelessWidget {
   /// drawer on main screen widget
@@ -38,29 +42,29 @@ class DrawerWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                top: 10,
-                right: 16,
-                child: SafeArea(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(6),
-                      child: const Icon(
-                        CupertinoIcons.clear,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   top: 10,
+              //   right: 16,
+              //   child: SafeArea(
+              //     child: GestureDetector(
+              //       onTap: () {
+              //         Navigator.pop(context);
+              //       },
+              //       child: Container(
+              //         decoration: BoxDecoration(
+              //           color: Theme.of(context).primaryColor,
+              //           shape: BoxShape.circle,
+              //         ),
+              //         padding: const EdgeInsets.all(6),
+              //         child: const Icon(
+              //           CupertinoIcons.clear,
+              //           color: Colors.white,
+              //           size: 30,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               const Positioned(
                 top: 200,
                 left: 0,
@@ -82,7 +86,35 @@ class DrawerWidget extends StatelessWidget {
                     const Text('text 5'),
                   ],
                 ),
-              )
+              ),
+              if (state is LoggedState)
+                Positioned(
+                  top: 30,
+                  right: 16,
+                  child: IconButton(
+                    onPressed: () {
+                      context.read<UserBloc>().add(
+                            const LogOutUserEvent(),
+                          );
+                    },
+                    icon: const Icon(Icons.logout),
+                  ),
+                ),
+              if (state is NotloggedState)
+                Positioned(
+                  top: 30,
+                  right: 16,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<dynamic>(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.login),
+                  ),
+                ),
             ],
           ),
         );

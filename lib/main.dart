@@ -40,23 +40,22 @@ class MyApp extends StatelessWidget {
         loginRepositry,
         UserRepositoryImpl(),
       ),
-      child: MaterialApp(
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        title: 'Flutter Demo',
-        theme: AppThemeData.lightTheme,
-        home: FlavorBanner(
-          flavor: Flavor.dev,
-          child: BlocProvider(
-            create: (context) => LoginScreenBloc(loginRepositry),
-            child: const LoginScreen(),
+      child: RepositoryProvider.value(
+        value: loginRepositry,
+        child: MaterialApp(
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          title: 'Flutter Demo',
+          theme: AppThemeData.lightTheme,
+          home: const FlavorBanner(
+            flavor: Flavor.dev,
+            child: MapScreen(),
           ),
-          // MapScreen(),
         ),
       ),
     );
