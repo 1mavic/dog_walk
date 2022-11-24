@@ -26,14 +26,35 @@ void main() async {
   runApp(const MyApp());
 }
 
+/// scaffold messange key
+final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
 /// my app widget
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   /// my app widget
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late LoginRepository loginRepositry;
+
+  @override
+  void initState() {
+    loginRepositry = FirebaseLoginRepository();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    loginRepositry.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final loginRepositry = FirebaseLoginRepository();
     return BlocProvider(
       lazy: false,
       create: (context) => UserBloc(
@@ -43,6 +64,7 @@ class MyApp extends StatelessWidget {
       child: RepositoryProvider.value(
         value: loginRepositry,
         child: MaterialApp(
+          scaffoldMessengerKey: scaffoldKey,
           localizationsDelegates: const [
             S.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -164,6 +186,7 @@ class FloatingButtonsWidget extends HookWidget {
           //mainAxisAlignment: MainAxisAlignment.end,
           children: [
             _SmallFabWidget(
+              heroTag: 'a',
               bottom: isExpanded.value ? 65 : 0,
               right: 7,
               icon: CupertinoIcons.person,
@@ -175,6 +198,7 @@ class FloatingButtonsWidget extends HookWidget {
                   ),
             ),
             _SmallFabWidget(
+              heroTag: 'b',
               bottom: isExpanded.value ? 120 : 0,
               right: 7,
               icon: CupertinoIcons.arrow_turn_left_down,
@@ -182,6 +206,7 @@ class FloatingButtonsWidget extends HookWidget {
                   context.read<UserBloc>().add(const LogOutUserEvent()),
             ),
             _SmallFabWidget(
+              heroTag: 'c',
               bottom: 7,
               right: isExpanded.value ? 65 : 0,
               icon: CupertinoIcons.location_circle,
@@ -193,6 +218,7 @@ class FloatingButtonsWidget extends HookWidget {
                   ),
             ),
             FloatingActionButton(
+              heroTag: '1',
               onPressed: () {
                 isExpanded.value = !isExpanded.value;
               },
@@ -211,11 +237,13 @@ class _SmallFabWidget extends StatelessWidget {
     required this.right,
     required this.icon,
     required this.onTap,
+    required this.heroTag,
   });
   final double bottom;
   final double right;
   final IconData icon;
   final VoidCallback onTap;
+  final String heroTag;
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
@@ -226,6 +254,7 @@ class _SmallFabWidget extends StatelessWidget {
       child: SizedBox.square(
         dimension: 45,
         child: FloatingActionButton(
+          heroTag: heroTag,
           onPressed: onTap,
           //  {
           // S.load(

@@ -24,6 +24,15 @@ class ChangeModeEvent extends LoginScreenBlocEvent {}
 /// show/hide password field
 class ShowPasswordEvent extends LoginScreenBlocEvent {}
 
+/// show error event
+class ShowErrorEvent extends LoginScreenBlocEvent {
+  /// show error event
+  const ShowErrorEvent(this.loginError);
+
+  /// object with error texts
+  final LoginError? loginError;
+}
+
 /// change text of email or password event
 class ChangeFieldDataEvent extends LoginScreenBlocEvent {
   /// change text of email or password event

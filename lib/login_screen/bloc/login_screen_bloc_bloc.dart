@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'package:doggie_walker/entity/models/errors/login_error.dart';
 import 'package:doggie_walker/entity/models/login/login_state.dart';
 import 'package:doggie_walker/entity/repositories/login_repository/login_repository_contract.dart';
 import 'package:doggie_walker/generated/l10n.dart';
+import 'package:doggie_walker/main.dart';
+import 'package:doggie_walker/utils/custom_snakbar.dart';
 import 'package:doggie_walker/utils/wrapper.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'login_screen_bloc_event.dart';
@@ -24,15 +28,20 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
         add(FinishedEvent());
       }
     });
+    _errorSub = _loginRepository.errorStatus.listen((event) {
+      add(ShowErrorEvent(event));
+    });
     on<ChangeFieldDataEvent>(_onFieldChange);
     on<ChangeModeEvent>(_changeMode);
     on<FinishedEvent>(_finish);
     on<LoginEvent>(_login);
     on<SingInEvent>(_signIn);
     on<ShowPasswordEvent>(_showPassword);
+    on<ShowErrorEvent>(_showError);
   }
   final LoginRepository _loginRepository;
   late StreamSubscription<UserLoggingStatus> _loginSub;
+  late StreamSubscription<LoginError?> _errorSub;
 
   void _changeMode(
     ChangeModeEvent event,
@@ -82,6 +91,7 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
     if (!isFieldsValid) {
       return;
     }
+    emit(state.copyWith(loading: true));
     _loginRepository.loginUser(
       state.email ?? '',
       state.password ?? '',
@@ -96,9 +106,31 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
     if (!isFieldsValid) {
       return;
     }
+    emit(state.copyWith(loading: true));
     _loginRepository.createUser(
       state.email ?? '',
       state.password ?? '',
+    );
+  }
+
+  void _showError(
+    ShowErrorEvent event,
+    Emitter<LoginScreenBlocState> emit,
+  ) {
+    final loginError = event.loginError;
+    if (loginError?.error != null) {
+      scaffoldKey.currentState?.showSnackBar(
+        SnackMy(
+          text: loginError?.error ?? '',
+        ),
+      );
+    }
+    emit(
+      state.copyWith(
+        loading: false,
+        passwordError: Wrapped.value(loginError?.passwordError),
+        emailError: Wrapped.value(loginError?.emailError),
+      ),
     );
   }
 
@@ -114,6 +146,7 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
   @override
   Future<void> close() {
     _loginSub.cancel();
+    _errorSub.cancel();
     return super.close();
   }
 

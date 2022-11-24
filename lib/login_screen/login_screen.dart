@@ -1,6 +1,7 @@
 import 'package:doggie_walker/entity/repositories/login_repository/login_repository_contract.dart';
 import 'package:doggie_walker/generated/l10n.dart';
 import 'package:doggie_walker/login_screen/bloc/login_screen_bloc_bloc.dart';
+import 'package:doggie_walker/login_screen/ui/bezier_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,6 +12,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.of(context).viewPadding.top;
     return BlocProvider(
       create: (context) => LoginScreenBloc(
         context.read<LoginRepository>(),
@@ -24,70 +26,90 @@ class LoginScreen extends StatelessWidget {
               }
             },
             builder: (context, state) {
+              final hasError =
+                  state.emailError != null || state.passwordError != null;
               return Scaffold(
-                body: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 25,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Flexible(
-                        flex: 3,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextFormField(
-                              onChanged: (val) =>
-                                  context.read<LoginScreenBloc>().add(
-                                        ChangeFieldDataEvent(
-                                          email: val,
-                                        ),
-                                      ),
-                              autocorrect: false,
-                              maxLength: 25,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                errorText: state.emailError,
-                                hintText: S.of(context).email,
-                              ),
+                body: CustomScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  slivers: [
+                    SliverFillRemaining(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          BezierContainerWidget(
+                            color: Theme.of(context).primaryColor,
+                            height: 150 + kToolbarHeight + padding,
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 25,
                             ),
-                            TextFormField(
-                              onChanged: (val) =>
-                                  context.read<LoginScreenBloc>().add(
-                                        ChangeFieldDataEvent(
-                                          password: val,
-                                        ),
-                                      ),
-                              autocorrect: false,
-                              maxLength: 15,
-                              obscureText: !state.showPassword,
-                              decoration: InputDecoration(
-                                errorText: state.passwordError,
-                                hintText: S.of(context).password,
-                                alignLabelWithHint: true,
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    context.read<LoginScreenBloc>().add(
-                                          ShowPasswordEvent(),
-                                        );
-                                  },
-                                  icon: state.showPassword
-                                      ? const Icon(
-                                          Icons.visibility_off_outlined)
-                                      : const Icon(Icons.visibility_outlined),
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  onChanged: (val) =>
+                                      context.read<LoginScreenBloc>().add(
+                                            ChangeFieldDataEvent(
+                                              email: val,
+                                            ),
+                                          ),
+                                  autocorrect: false,
+                                  maxLength: 25,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    errorText: state.emailError,
+                                    errorMaxLines: 2,
+                                    hintText: S.of(context).email,
+                                    counterText: '',
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  onChanged: (val) =>
+                                      context.read<LoginScreenBloc>().add(
+                                            ChangeFieldDataEvent(
+                                              password: val,
+                                            ),
+                                          ),
+                                  autocorrect: false,
+                                  maxLength: 15,
+                                  obscureText: !state.showPassword,
+                                  decoration: InputDecoration(
+                                    errorText: state.passwordError,
+                                    errorMaxLines: 2,
+                                    hintText: S.of(context).password,
+                                    alignLabelWithHint: true,
+                                    suffixIconConstraints:
+                                        const BoxConstraints(maxHeight: 38),
+                                    counterText: '',
+                                    isDense: true,
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        context.read<LoginScreenBloc>().add(
+                                              ShowPasswordEvent(),
+                                            );
+                                      },
+                                      icon: state.showPassword
+                                          ? const Icon(
+                                              Icons.visibility_off_outlined)
+                                          : const Icon(
+                                              Icons.visibility_outlined),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            ElevatedButton(
-                              onPressed: state.loading
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 25,
+                            ),
+                            child: ElevatedButton(
+                              onPressed: state.loading || hasError
                                   ? null
                                   : () {
                                       if (state.loginMode) {
@@ -106,41 +128,44 @@ class LoginScreen extends StatelessWidget {
                                     : S.of(context).signIn,
                               ),
                             ),
-                            Center(
-                              child: TextButton(
-                                onPressed: state.loading
-                                    ? null
-                                    : () {
-                                        context.read<LoginScreenBloc>().add(
-                                              ChangeModeEvent(),
-                                            );
-                                      },
-                                child: Text(
-                                  state.loginMode
-                                      ? S.of(context).signIn
-                                      : S.of(context).login,
-                                ),
+                          ),
+                          Center(
+                            child: TextButton(
+                              onPressed: state.loading
+                                  ? null
+                                  : () {
+                                      context.read<LoginScreenBloc>().add(
+                                            ChangeModeEvent(),
+                                          );
+                                    },
+                              child: Text(
+                                state.loginMode
+                                    ? S.of(context).signIn
+                                    : S.of(context).login,
                               ),
                             ),
-                            Center(
-                              child: TextButton(
-                                onPressed: state.loading
-                                    ? null
-                                    : () {
-                                        context.read<LoginScreenBloc>().add(
-                                              RestorePasswordevent(),
-                                            );
-                                      },
-                                child: Text(
-                                  S.of(context).passwordRestore,
-                                ),
+                          ),
+                          Center(
+                            child: TextButton(
+                              onPressed: state.loading
+                                  ? null
+                                  : () {
+                                      context.read<LoginScreenBloc>().add(
+                                            RestorePasswordevent(),
+                                          );
+                                    },
+                              child: Text(
+                                S.of(context).passwordRestore,
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               );
             },

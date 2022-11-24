@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doggie_walker/entity/models/errors/login_error.dart';
 import 'package:doggie_walker/entity/models/login/login_state.dart';
 import 'package:doggie_walker/entity/repositories/login_repository/login_repository_contract.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,8 +27,14 @@ class FirebaseLoginRepository implements LoginRepository {
   final StreamController<UserLoggingStatus> _statusStream =
       StreamController<UserLoggingStatus>.broadcast();
 
+  final StreamController<LoginError?> _errorStream =
+      StreamController<LoginError?>.broadcast();
+
   @override
-  void dispose() => _statusStream.close();
+  void dispose() {
+    _statusStream.close();
+    _errorStream.close();
+  }
 
   @override
   Future<void> logOutUser() async {
@@ -38,6 +45,9 @@ class FirebaseLoginRepository implements LoginRepository {
   Stream<UserLoggingStatus> get loginStatus => _statusStream.stream;
 
   @override
+  Stream<LoginError?> get errorStatus => _errorStream.stream;
+
+  @override
   Future<void> loginUser(String email, String password) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -45,13 +55,31 @@ class FirebaseLoginRepository implements LoginRepository {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        log('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        log('The account already exists for that email.');
+      if (e.code.contains('mail')) {
+        _errorStream.add(
+          LoginError(
+            emailError: e.message,
+          ),
+        );
+      } else if (e.code.contains('password')) {
+        _errorStream.add(
+          LoginError(
+            passwordError: e.message,
+          ),
+        );
+      } else {
+        _errorStream.add(
+          LoginError(
+            error: e.message,
+          ),
+        );
       }
     } catch (e) {
-      log(e.toString());
+      _errorStream.add(
+        LoginError(
+          error: e.toString(),
+        ),
+      );
     }
   }
 
@@ -76,14 +104,31 @@ class FirebaseLoginRepository implements LoginRepository {
       );
       log(credential.toString());
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        log('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        log('The account already exists for that email.');
+      if (e.code.contains('mail')) {
+        _errorStream.add(
+          LoginError(
+            emailError: e.message,
+          ),
+        );
+      } else if (e.code.contains('password')) {
+        _errorStream.add(
+          LoginError(
+            passwordError: e.message,
+          ),
+        );
+      } else {
+        _errorStream.add(
+          LoginError(
+            error: e.message,
+          ),
+        );
       }
     } catch (e) {
-      log(e.toString());
+      _errorStream.add(
+        LoginError(
+          error: e.toString(),
+        ),
+      );
     }
-    log('created');
   }
 }
