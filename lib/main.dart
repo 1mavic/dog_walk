@@ -1,11 +1,15 @@
 import 'dart:developer';
+
 import 'package:doggie_walker/bloc/user_bloc/user_bloc.dart';
 import 'package:doggie_walker/config/flavor/flavor_banner.dart';
 import 'package:doggie_walker/config/flavor/flavor_enum.dart';
+import 'package:doggie_walker/config/theme/app_theme_data.dart';
 import 'package:doggie_walker/entity/repositories/login_repository/login_repository.dart';
 import 'package:doggie_walker/entity/repositories/user_repository/user_repository.dart';
 import 'package:doggie_walker/environment.dart';
 import 'package:doggie_walker/generated/l10n.dart';
+import 'package:doggie_walker/login_screen/bloc/login_screen_bloc_bloc.dart';
+import 'package:doggie_walker/login_screen/login_screen.dart';
 import 'package:doggie_walker/ui/main_screen_drawer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,12 +30,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   /// my app widget
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final loginRepositry = FirebaseLoginRepository();
     return BlocProvider(
       lazy: false,
       create: (context) => UserBloc(
-        FirebaseLoginRepository(),
+        loginRepositry,
         UserRepositoryImpl(),
       ),
       child: MaterialApp(
@@ -43,12 +49,14 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const FlavorBanner(
+        theme: AppThemeData.lightTheme,
+        home: FlavorBanner(
           flavor: Flavor.dev,
-          child: MapScreen(),
+          child: BlocProvider(
+            create: (context) => LoginScreenBloc(loginRepositry),
+            child: const LoginScreen(),
+          ),
+          // MapScreen(),
         ),
       ),
     );

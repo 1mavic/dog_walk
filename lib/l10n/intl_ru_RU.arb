@@ -5,5 +5,13 @@
         "placeholders": {
             "name": {}
         }
-    }
+    },
+    "login": "Войти",
+    "signIn": "Зарегистрироваться",
+    "passwordRestore": "Забыли пароль?",
+    "email": "почта",
+    "password": "пароль",
+    "emptyField": "поле не должно быть пустым",
+    "invalidEmail": "неверный формат почты",
+    "shortPassword": "пароль должен быть не менее 6 символов"
 }

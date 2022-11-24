@@ -24,7 +24,7 @@ class FirebaseLoginRepository implements LoginRepository {
     });
   }
   final StreamController<UserLoggingStatus> _statusStream =
-      StreamController<UserLoggingStatus>();
+      StreamController<UserLoggingStatus>.broadcast();
 
   @override
   void dispose() => _statusStream.close();
