@@ -33,6 +33,7 @@ class LoginScreen extends StatelessWidget {
                   physics: const ClampingScrollPhysics(),
                   slivers: [
                     SliverFillRemaining(
+                      hasScrollBody: false,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -41,67 +42,9 @@ class LoginScreen extends StatelessWidget {
                             height: 150 + kToolbarHeight + padding,
                           ),
                           const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 25,
-                            ),
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  onChanged: (val) =>
-                                      context.read<LoginScreenBloc>().add(
-                                            ChangeFieldDataEvent(
-                                              email: val,
-                                            ),
-                                          ),
-                                  autocorrect: false,
-                                  maxLength: 25,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                    errorText: state.emailError,
-                                    errorMaxLines: 2,
-                                    hintText: S.of(context).email,
-                                    counterText: '',
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                TextFormField(
-                                  onChanged: (val) =>
-                                      context.read<LoginScreenBloc>().add(
-                                            ChangeFieldDataEvent(
-                                              password: val,
-                                            ),
-                                          ),
-                                  autocorrect: false,
-                                  maxLength: 15,
-                                  obscureText: !state.showPassword,
-                                  decoration: InputDecoration(
-                                    errorText: state.passwordError,
-                                    errorMaxLines: 2,
-                                    hintText: S.of(context).password,
-                                    alignLabelWithHint: true,
-                                    suffixIconConstraints:
-                                        const BoxConstraints(maxHeight: 38),
-                                    counterText: '',
-                                    isDense: true,
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        context.read<LoginScreenBloc>().add(
-                                              ShowPasswordEvent(),
-                                            );
-                                      },
-                                      icon: state.showPassword
-                                          ? const Icon(
-                                              Icons.visibility_off_outlined)
-                                          : const Icon(
-                                              Icons.visibility_outlined),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                          _TextInputWidget(),
+                          const SizedBox(
+                            height: 15,
                           ),
                           const Spacer(),
                           Padding(
@@ -151,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                                   ? null
                                   : () {
                                       context.read<LoginScreenBloc>().add(
-                                            RestorePasswordevent(),
+                                            RestorePasswordEvent(),
                                           );
                                     },
                               child: Text(
@@ -172,6 +115,106 @@ class LoginScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _TextInputWidget extends StatefulWidget {
+  const _TextInputWidget({super.key});
+
+  @override
+  State<_TextInputWidget> createState() => _TextInputWidgetState();
+}
+
+class _TextInputWidgetState extends State<_TextInputWidget> {
+  final focusNode = FocusNode();
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginScreenBloc, LoginScreenBlocState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 25,
+          ),
+          child: Column(
+            children: [
+              TextFormField(
+                enabled: !state.loading,
+                onChanged: (val) => context.read<LoginScreenBloc>().add(
+                      ChangeFieldDataEvent(
+                        email: val,
+                      ),
+                    ),
+                onFieldSubmitted: (_) {
+                  focusNode.requestFocus();
+                },
+                textInputAction: TextInputAction.next,
+                autocorrect: false,
+                maxLength: 25,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  errorText: state.emailError,
+                  errorMaxLines: 2,
+                  hintText: S.of(context).email,
+                  counterText: '',
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                focusNode: focusNode,
+                enabled: !state.loading,
+                onChanged: (val) => context.read<LoginScreenBloc>().add(
+                      ChangeFieldDataEvent(
+                        password: val,
+                      ),
+                    ),
+                onFieldSubmitted: (_) {
+                  if (state.loginMode) {
+                    context.read<LoginScreenBloc>().add(
+                          LoginEvent(),
+                        );
+                  } else {
+                    context.read<LoginScreenBloc>().add(
+                          SingInEvent(),
+                        );
+                  }
+                },
+                textInputAction: TextInputAction.done,
+                autocorrect: false,
+                maxLength: 15,
+                obscureText: !state.showPassword,
+                decoration: InputDecoration(
+                  errorText: state.passwordError,
+                  errorMaxLines: 2,
+                  hintText: S.of(context).password,
+                  alignLabelWithHint: true,
+                  suffixIconConstraints: const BoxConstraints(maxHeight: 38),
+                  counterText: '',
+                  isDense: true,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      context.read<LoginScreenBloc>().add(
+                            ShowPasswordEvent(),
+                          );
+                    },
+                    icon: state.showPassword
+                        ? const Icon(Icons.visibility_off_outlined)
+                        : const Icon(Icons.visibility_outlined),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

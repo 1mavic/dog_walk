@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doggie_walker/entity/models/errors/login_error.dart';
 import 'package:doggie_walker/entity/models/login/login_state.dart';
 import 'package:doggie_walker/entity/repositories/login_repository/login_repository_contract.dart';
+import 'package:doggie_walker/generated/l10n.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 /// login user service with farebase implementation
@@ -53,6 +54,47 @@ class FirebaseLoginRepository implements LoginRepository {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code.contains('mail')) {
+        _errorStream.add(
+          LoginError(
+            emailError: e.message,
+          ),
+        );
+      } else if (e.code.contains('password')) {
+        _errorStream.add(
+          LoginError(
+            passwordError: e.message,
+          ),
+        );
+      } else {
+        _errorStream.add(
+          LoginError(
+            error: e.message,
+          ),
+        );
+      }
+    } catch (e) {
+      _errorStream.add(
+        LoginError(
+          error: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<void> restoreUserPassword(String email) async {
+    await Future.delayed(Duration(seconds: 3));
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: email,
+      );
+      _errorStream.add(
+        LoginError(
+          error: S.current.resetMessageSend,
+        ),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code.contains('mail')) {

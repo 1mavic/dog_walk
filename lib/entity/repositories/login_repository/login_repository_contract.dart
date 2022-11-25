@@ -21,6 +21,11 @@ abstract class LoginRepository {
     String password,
   );
 
+  /// restore user password method
+  Future<void> restoreUserPassword(
+    String email,
+  );
+
   /// log out user method
   Future<void> logOutUser();
 

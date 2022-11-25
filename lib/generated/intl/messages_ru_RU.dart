@@ -35,6 +35,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("пароль"),
         "passwordRestore":
             MessageLookupByLibrary.simpleMessage("Забыли пароль?"),
+        "resetMessageSend": MessageLookupByLibrary.simpleMessage(
+            "На вашу электронную почту было отправлено письмо для сброса пароля"),
         "shortPassword": MessageLookupByLibrary.simpleMessage(
             "пароль должен быть не менее 6 символов"),
         "signIn": MessageLookupByLibrary.simpleMessage("Зарегистрироваться")

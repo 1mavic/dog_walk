@@ -149,6 +149,16 @@ class S {
       args: [],
     );
   }
+
+  /// `A password reset email has been sent to your email`
+  String get resetMessageSend {
+    return Intl.message(
+      'A password reset email has been sent to your email',
+      name: 'resetMessageSend',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

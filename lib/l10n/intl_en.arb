@@ -13,5 +13,6 @@
     "password": "password",
     "emptyField": "field must not be empty",
     "invalidEmail": "invalid email format",
-    "shortPassword": "password must be at least 6 characters long"
+    "shortPassword": "password must be at least 6 characters long",
+    "resetMessageSend": "A password reset email has been sent to your email"
 }

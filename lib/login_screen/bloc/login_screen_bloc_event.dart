@@ -16,7 +16,7 @@ class LoginEvent extends LoginScreenBlocEvent {}
 class SingInEvent extends LoginScreenBlocEvent {}
 
 /// restore user event
-class RestorePasswordevent extends LoginScreenBlocEvent {}
+class RestorePasswordEvent extends LoginScreenBlocEvent {}
 
 /// change mode from log to sign and vise versa
 class ChangeModeEvent extends LoginScreenBlocEvent {}

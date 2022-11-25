@@ -38,6 +38,7 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
     on<SingInEvent>(_signIn);
     on<ShowPasswordEvent>(_showPassword);
     on<ShowErrorEvent>(_showError);
+    on<RestorePasswordEvent>(_restorePasword);
   }
   final LoginRepository _loginRepository;
   late StreamSubscription<UserLoggingStatus> _loginSub;
@@ -134,6 +135,26 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
     );
   }
 
+  void _restorePasword(
+    RestorePasswordEvent event,
+    Emitter<LoginScreenBlocState> emit,
+  ) {
+    final isFieldsValid = _validateFields(
+      emit,
+      true,
+    );
+    final email = state.email;
+    if (email == null) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        loading: true,
+      ),
+    );
+    _loginRepository.restoreUserPassword(email);
+  }
+
   void _finish(
     FinishedEvent event,
     Emitter<LoginScreenBlocState> emit,
@@ -150,7 +171,10 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
     return super.close();
   }
 
-  bool _validateFields(Emitter<LoginScreenBlocState> emit) {
+  bool _validateFields(
+    Emitter<LoginScreenBlocState> emit, [
+    bool onlyEmail = false,
+  ]) {
     final email = state.email;
     final password = state.password;
     String? emailError;
@@ -167,14 +191,17 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
         emailError = S.current.invalidEmail;
       }
     }
-    if (password == null) {
-      passwordError = S.current.emptyField;
-    } else if (password.trim().isEmpty) {
-      passwordError = S.current.emptyField;
-    } else if (password.length < 6) {
-      passwordError = S.current.shortPassword;
+    if (!onlyEmail) {
+      if (password == null) {
+        passwordError = S.current.emptyField;
+      } else if (password.trim().isEmpty) {
+        passwordError = S.current.emptyField;
+      } else if (password.length < 6) {
+        passwordError = S.current.shortPassword;
+      }
     }
-    if (emailError != null && passwordError != null) {
+
+    if (emailError != null || passwordError != null) {
       emit(
         state.copyWith(
           emailError: Wrapped.value(emailError),
