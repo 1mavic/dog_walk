@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           Center(
                             child: TextButton(
-                              onPressed: state.loading
+                              onPressed: state.loading || hasError
                                   ? null
                                   : () {
                                       context.read<LoginScreenBloc>().add(
@@ -90,7 +90,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           Center(
                             child: TextButton(
-                              onPressed: state.loading
+                              onPressed: state.loading || hasError
                                   ? null
                                   : () {
                                       context.read<LoginScreenBloc>().add(
