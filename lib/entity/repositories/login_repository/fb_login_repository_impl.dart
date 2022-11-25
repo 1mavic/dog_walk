@@ -86,7 +86,6 @@ class FirebaseLoginRepository implements LoginRepository {
 
   @override
   Future<void> restoreUserPassword(String email) async {
-    await Future.delayed(Duration(seconds: 3));
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: email,
