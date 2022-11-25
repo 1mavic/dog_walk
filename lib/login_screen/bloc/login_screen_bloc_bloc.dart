@@ -7,7 +7,6 @@ import 'package:doggie_walker/main.dart';
 import 'package:doggie_walker/utils/custom_snakbar.dart';
 import 'package:doggie_walker/utils/wrapper.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'login_screen_bloc_event.dart';
@@ -143,6 +142,9 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
       emit,
       true,
     );
+    if (!isFieldsValid) {
+      return;
+    }
     final email = state.email;
     if (email == null) {
       return;

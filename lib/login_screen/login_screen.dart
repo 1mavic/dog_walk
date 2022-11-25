@@ -42,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                             height: 150 + kToolbarHeight + padding,
                           ),
                           const Spacer(),
-                          _TextInputWidget(),
+                          const _TextInputWidget(),
                           const SizedBox(
                             height: 15,
                           ),
@@ -120,7 +120,7 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _TextInputWidget extends StatefulWidget {
-  const _TextInputWidget({super.key});
+  const _TextInputWidget();
 
   @override
   State<_TextInputWidget> createState() => _TextInputWidgetState();

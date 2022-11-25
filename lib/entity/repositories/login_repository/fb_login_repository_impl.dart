@@ -11,7 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirebaseLoginRepository implements LoginRepository {
   /// login user service with farebase implementation
   FirebaseLoginRepository() {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    _instance.authStateChanges().listen((User? user) {
       if (user == null) {
         log('not logged');
         _statusStream.sink.add(
@@ -25,6 +25,9 @@ class FirebaseLoginRepository implements LoginRepository {
       }
     });
   }
+
+  final _instance = FirebaseAuth.instance;
+
   final StreamController<UserLoggingStatus> _statusStream =
       StreamController<UserLoggingStatus>.broadcast();
 
@@ -39,7 +42,7 @@ class FirebaseLoginRepository implements LoginRepository {
 
   @override
   Future<void> logOutUser() async {
-    await FirebaseAuth.instance.signOut();
+    await _instance.signOut();
   }
 
   @override
@@ -51,7 +54,7 @@ class FirebaseLoginRepository implements LoginRepository {
   @override
   Future<void> loginUser(String email, String password) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await _instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -87,7 +90,7 @@ class FirebaseLoginRepository implements LoginRepository {
   @override
   Future<void> restoreUserPassword(String email) async {
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(
+      await _instance.sendPasswordResetEmail(
         email: email,
       );
       _errorStream.add(
@@ -130,8 +133,7 @@ class FirebaseLoginRepository implements LoginRepository {
   @override
   Future<void> createUser(String email, String password) async {
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential = await _instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );

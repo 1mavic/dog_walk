@@ -11,6 +11,9 @@ abstract class UserRepository {
   /// function to get current user data
   Future<void> getUser();
 
+  /// delete current user
+  Future<void> deleteUser();
+
   /// change current user data
   Future<void> changeUser(LoggedUser user);
 

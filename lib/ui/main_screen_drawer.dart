@@ -1,13 +1,9 @@
 import 'package:doggie_walker/bloc/user_bloc/user_bloc.dart';
 import 'package:doggie_walker/generated/l10n.dart';
+import 'package:doggie_walker/login_screen/login_screen.dart';
 import 'package:doggie_walker/ui/user_avatar_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../entity/repositories/login_repository/login_repository.dart';
-import '../login_screen/bloc/login_screen_bloc_bloc.dart';
-import '../login_screen/login_screen.dart';
 
 /// drawer on main screen widget
 class DrawerWidget extends StatelessWidget {
@@ -68,13 +64,26 @@ class DrawerWidget extends StatelessWidget {
                 Positioned(
                   top: 30,
                   right: 16,
-                  child: IconButton(
-                    onPressed: () {
-                      context.read<UserBloc>().add(
-                            const LogOutUserEvent(),
-                          );
-                    },
-                    icon: const Icon(Icons.logout),
+                  child: Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.read<UserBloc>().add(
+                                const LogOutUserEvent(),
+                              );
+                        },
+                        icon: const Icon(Icons.logout),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          context.read<UserBloc>().add(
+                                const DeleteUserEvent(),
+                              );
+                        },
+                        icon: const Icon(Icons.person_off_outlined),
+                      ),
+                    ],
                   ),
                 ),
               if (state is NotloggedState)

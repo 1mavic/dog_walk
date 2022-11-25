@@ -29,6 +29,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<CreateUserEvent>(_createUser);
     on<LoginUserEvent>(_loginUser);
     on<LogOutUserEvent>(_logOutUser);
+    on<DeleteUserEvent>(_deleteUser);
   }
   final LoginRepository _loginRepository;
   final UserRepository _userRepository;
@@ -70,6 +71,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       );
       return;
     }
+  }
+
+  Future<void> _deleteUser(
+    DeleteUserEvent event,
+    Emitter<UserState> emit,
+  ) async {
+    unawaited(_userRepository.deleteUser());
   }
 
   Future<void> _getUserData() async {

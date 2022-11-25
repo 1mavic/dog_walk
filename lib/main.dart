@@ -8,8 +8,6 @@ import 'package:doggie_walker/entity/repositories/login_repository/login_reposit
 import 'package:doggie_walker/entity/repositories/user_repository/user_repository.dart';
 import 'package:doggie_walker/environment.dart';
 import 'package:doggie_walker/generated/l10n.dart';
-import 'package:doggie_walker/login_screen/bloc/login_screen_bloc_bloc.dart';
-import 'package:doggie_walker/login_screen/login_screen.dart';
 import 'package:doggie_walker/ui/main_screen_drawer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
