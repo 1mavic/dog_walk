@@ -77,6 +77,14 @@ class LoginUserEvent extends UserEvent {
       ];
 }
 
+/// delete user event
+class DeleteUserEvent extends UserEvent {
+  /// delete user event
+  const DeleteUserEvent();
+  @override
+  List<Object?> get props => [];
+}
+
 /// user logout event
 class LogOutUserEvent extends UserEvent {
   /// user logout event

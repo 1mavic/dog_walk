@@ -1,7 +1,7 @@
 import 'package:doggie_walker/bloc/user_bloc/user_bloc.dart';
 import 'package:doggie_walker/generated/l10n.dart';
+import 'package:doggie_walker/login_screen/login_screen.dart';
 import 'package:doggie_walker/ui/user_avatar_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,29 +38,6 @@ class DrawerWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                top: 10,
-                right: 16,
-                child: SafeArea(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(6),
-                      child: const Icon(
-                        CupertinoIcons.clear,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
               const Positioned(
                 top: 200,
                 left: 0,
@@ -82,7 +59,49 @@ class DrawerWidget extends StatelessWidget {
                     const Text('text 5'),
                   ],
                 ),
-              )
+              ),
+              if (state is LoggedState)
+                Positioned(
+                  top: 30,
+                  right: 16,
+                  child: Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.read<UserBloc>().add(
+                                const LogOutUserEvent(),
+                              );
+                        },
+                        icon: const Icon(Icons.logout),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          context.read<UserBloc>().add(
+                                const DeleteUserEvent(),
+                              );
+                        },
+                        icon: const Icon(Icons.person_off_outlined),
+                      ),
+                    ],
+                  ),
+                ),
+              if (state is NotloggedState)
+                Positioned(
+                  top: 30,
+                  right: 16,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(
+                        MaterialPageRoute<dynamic>(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.login),
+                  ),
+                ),
             ],
           ),
         );

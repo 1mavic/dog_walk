@@ -69,6 +69,96 @@ class S {
       args: [name],
     );
   }
+
+  /// `LogIn`
+  String get login {
+    return Intl.message(
+      'LogIn',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SignIn`
+  String get signIn {
+    return Intl.message(
+      'SignIn',
+      name: 'signIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forget password?`
+  String get passwordRestore {
+    return Intl.message(
+      'Forget password?',
+      name: 'passwordRestore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `email`
+  String get email {
+    return Intl.message(
+      'email',
+      name: 'email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `password`
+  String get password {
+    return Intl.message(
+      'password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `field must not be empty`
+  String get emptyField {
+    return Intl.message(
+      'field must not be empty',
+      name: 'emptyField',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `invalid email format`
+  String get invalidEmail {
+    return Intl.message(
+      'invalid email format',
+      name: 'invalidEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `password must be at least 6 characters long`
+  String get shortPassword {
+    return Intl.message(
+      'password must be at least 6 characters long',
+      name: 'shortPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A password reset email has been sent to your email`
+  String get resetMessageSend {
+    return Intl.message(
+      'A password reset email has been sent to your email',
+      name: 'resetMessageSend',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
