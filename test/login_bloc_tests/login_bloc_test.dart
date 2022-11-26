@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:doggie_walker/bloc/user_bloc/user_bloc.dart';
 import 'package:doggie_walker/entity/repositories/login_repository/login_repository.dart';
 import 'package:doggie_walker/generated/l10n.dart';
 import 'package:doggie_walker/login_screen/login.dart';
@@ -91,20 +92,126 @@ void main() {
       ],
     );
 
+    // blocTest<LoginScreenBloc, LoginScreenBlocState>(
+    //   'error field on loggin with empty email',
+    //   build: () => loginBloc,
+    //   seed: () => const LoginScreenBlocState(
+    //     loginMode: true,
+    //     password: 'password',
+    //   ),
+    //   act: (bloc) => loginBloc.add(LoginEvent()),
+    //   expect: () => <LoginScreenBlocState>[
+    //     const LoginScreenBlocState(
+    //       loginMode: true,
+    //       password: 'password',
+    //       emailError: 'поле не должно быть пустым',
+    //     )
+    //   ],
+    // );
+
+    // blocTest<LoginScreenBloc, LoginScreenBlocState>(
+    //   'error field on loggin with empty password',
+    //   build: () => loginBloc,
+    //   seed: () =>
+    //       const LoginScreenBlocState(loginMode: true, email: 'test@test.com'),
+    //   act: (bloc) => loginBloc.add(LoginEvent()),
+    //   expect: () => <LoginScreenBlocState>[
+    //     const LoginScreenBlocState(
+    //       loginMode: true,
+    //       email: 'test@test.com',
+    //       passwordError: 'поле не должно быть пустым',
+    //     )
+    //   ],
+    // );
+
     blocTest<LoginScreenBloc, LoginScreenBlocState>(
-      'error field on loggin with empty email',
+      'state with loading after login fields check',
       build: () => loginBloc,
       seed: () => const LoginScreenBlocState(
         loginMode: true,
-        password: 'password',
+        email: 'test@test.com',
+        password: 'passwordTest',
       ),
       act: (bloc) => loginBloc.add(LoginEvent()),
+      expect: () => <LoginScreenBlocState>[
+        const LoginScreenBlocState(
+          loginMode: true,
+          email: 'test@test.com',
+          password: 'passwordTest',
+          loading: true,
+        )
+      ],
+    );
+
+    blocTest<LoginScreenBloc, LoginScreenBlocState>(
+      'finished state on success login',
+      build: () => loginBloc,
+      seed: () => const LoginScreenBlocState(
+        loginMode: true,
+        email: 'test@test.com',
+        password: 'passwordTest',
+      ),
+      skip: 1,
+      act: (bloc) => loginBloc.add(LoginEvent()),
+      wait: const Duration(seconds: 2),
+      expect: () => <LoginScreenBlocState>[
+        const LoginFinishedState(
+          loginMode: true,
+        )
+      ],
+    );
+
+    blocTest<LoginScreenBloc, LoginScreenBlocState>(
+      'finished state on success user creation',
+      build: () => loginBloc,
+      seed: () => const LoginScreenBlocState(
+        loginMode: true,
+        email: 'test@test.com',
+        password: 'passwordTest',
+      ),
+      skip: 1,
+      act: (bloc) => loginBloc.add(SingInEvent()),
+      wait: const Duration(seconds: 2),
+      expect: () => <LoginScreenBlocState>[
+        const LoginFinishedState(
+          loginMode: true,
+        )
+      ],
+    );
+
+    blocTest<LoginScreenBloc, LoginScreenBlocState>(
+      'restore user password event test lodaing state',
+      build: () => loginBloc,
+      seed: () => const LoginScreenBlocState(
+        loginMode: true,
+        email: 'test@test.com',
+      ),
+      // skip: 1,
+      act: (bloc) => loginBloc.add(RestorePasswordEvent()),
+      // wait: const Duration(seconds: 2),
+      expect: () => <LoginScreenBlocState>[
+        const LoginScreenBlocState(
+          loginMode: true,
+          email: 'test@test.com',
+          loading: true,
+        )
+      ],
+    );
+
+    blocTest<LoginScreenBloc, LoginScreenBlocState>(
+      'restore user password event test lodaing state',
+      build: () => loginBloc,
+      seed: () => const LoginScreenBlocState(
+        loginMode: true,
+        email: 'test@test.com',
+      ),
+      skip: 1,
+      act: (bloc) => loginBloc.add(RestorePasswordEvent()),
       wait: const Duration(seconds: 2),
       expect: () => <LoginScreenBlocState>[
         const LoginScreenBlocState(
           loginMode: true,
-          password: 'password',
-          emailError: 'поле не должно быть пустым',
+          email: 'test@test.com',
         )
       ],
     );

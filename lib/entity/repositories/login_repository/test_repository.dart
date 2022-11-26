@@ -21,8 +21,8 @@ class TestRepository extends LoginRepository {
   @override
   Future<void> createUser(String email, String password) async {
     await _latency;
-    // TODO: implement createUser
-    throw UnimplementedError();
+    await _latency;
+    _statusStream.add(UserLoggingStatus.logged);
   }
 
   @override
@@ -52,7 +52,6 @@ class TestRepository extends LoginRepository {
   @override
   Future<void> restoreUserPassword(String email) async {
     await _latency;
-    // TODO: implement restoreUserPassword
-    throw UnimplementedError();
+    _errorStream.add(LoginError(error: ''));
   }
 }

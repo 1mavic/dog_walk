@@ -73,6 +73,6 @@ class LoginScreenBlocState extends Equatable {
 class LoginFinishedState extends LoginScreenBlocState {
   /// login state when process finished successfully
   const LoginFinishedState({
-    super.loginMode = false,
+    required super.loginMode,
   });
 }

@@ -118,6 +118,7 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
     Emitter<LoginScreenBlocState> emit,
   ) {
     final loginError = event.loginError;
+
     if (loginError?.error != null) {
       scaffoldKey.currentState?.showSnackBar(
         SnackMy(
@@ -162,7 +163,9 @@ class LoginScreenBloc extends Bloc<LoginScreenBlocEvent, LoginScreenBlocState> {
     Emitter<LoginScreenBlocState> emit,
   ) {
     emit(
-      const LoginFinishedState(),
+      LoginFinishedState(
+        loginMode: state.loginMode,
+      ),
     );
   }
 
